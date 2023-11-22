@@ -2,13 +2,12 @@ package com.example.backend.interfaceUI.rest;
 
 import com.example.backend.application.dto.guestDto.GuestDto;
 import com.example.backend.application.service.GuestService;
-import com.example.backend.domain.entity.Guest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/guests")
@@ -24,5 +23,19 @@ public class GuestController {
     @GetMapping()
     public List<GuestDto> getAll() {
         return guestService.getAllGuest();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GuestDto> getUserById(@PathVariable String id,
+                                                @RequestParam(required = false) Boolean primaryOnly) {
+        Optional<GuestDto> guest;
+        if (Boolean.TRUE.equals(primaryOnly)) {
+            guest = guestService.findUserByIdWithPrimaryAddress(id);
+        } else {
+            guest = guestService.findUserByIdWithAddresses(id);
+        }
+
+        return guest.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

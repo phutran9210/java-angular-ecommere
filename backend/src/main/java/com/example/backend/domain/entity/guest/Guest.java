@@ -1,13 +1,14 @@
-package com.example.backend.domain.entity;
+package com.example.backend.domain.entity.guest;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -48,5 +49,14 @@ public class Guest {
 
     @Column(name = "hide", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean hide;
+
+
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<GuestAddress> addresses;
+
+    @OneToOne
+    @JoinColumn(name = "primary_address_id", referencedColumnName = "address_id")
+    private GuestAddress primaryAddress;
 
 }
