@@ -8,7 +8,9 @@ import java.util.Optional;
 public interface GuestService {
     List<GuestDto> getAllGuest();
 
-    Optional<GuestDto> findUserByIdWithAddresses(String id);
+    Optional<GuestDto> findUserByIdWithAddress(String id);
 
-    Optional<GuestDto> findUserByIdWithPrimaryAddress(String id);
+    Optional<GuestDto> findUserById(String id);
+
+    GuestDto createGuest(GuestDto guestDto);
 }

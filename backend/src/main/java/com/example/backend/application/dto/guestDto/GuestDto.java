@@ -19,5 +19,4 @@ public class GuestDto {
     private LocalDateTime createAt;
     private String status;
     private Set<GuestAddressDto> addresses;
-    private GuestAddressDto primaryAddress;
 }

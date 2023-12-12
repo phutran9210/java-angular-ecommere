@@ -7,8 +7,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -49,14 +48,10 @@ public class Guest {
 
     @Column(name = "hide", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean hide;
-
-
+    
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private Set<GuestAddress> addresses;
 
-    @OneToOne
-    @JoinColumn(name = "primary_address_id", referencedColumnName = "address_id")
-    private GuestAddress primaryAddress;
 
 }

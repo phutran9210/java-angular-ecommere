@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 
 public class GuestMapper {
-    public static GuestDto toDto(Guest guest) {
+    public static GuestDto toDto(Guest guest, Boolean loadAddresses) {
         if (guest == null) {
             return null;
         }
@@ -21,23 +21,19 @@ public class GuestMapper {
         dto.setCreateAt(guest.getCreateAt());
         dto.setStatus(guest.getStatus());
 
-        // Chuyển đổi các địa chỉ
-        if (guest.getAddresses() != null) {
+        if (loadAddresses && guest.getAddresses() != null) {
             dto.setAddresses(guest.getAddresses().stream()
                     .map(GuestAddressMapper::toDto)
                     .collect(Collectors.toSet()));
         }
 
-        // Chuyển đổi địa chỉ chính
-        if (guest.getPrimaryAddress() != null) {
-            dto.setPrimaryAddress(GuestAddressMapper.toDto(guest.getPrimaryAddress()));
-        }
-
         return dto;
     }
 
-    public static List<GuestDto> toDtoList(List<Guest> guests) {
-        return guests.stream().map(GuestMapper::toDto).collect(Collectors.toList());
+    public static List<GuestDto> toDtoList(List<Guest> guests, boolean loadAddresses) {
+        return guests.stream()
+                .map(guest -> toDto(guest, loadAddresses))
+                .collect(Collectors.toList());
     }
 
 }

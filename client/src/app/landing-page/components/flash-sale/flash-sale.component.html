@@ -1,0 +1,17 @@
+<div
+  *ngIf="isDivVisible"
+  class="bg-bluegray-900 text-gray-100 p-3 flex justify-content-between lg:justify-content-center align-items-center flex-wrap">
+  <div class="font-bold mr-8">🔥 Hot Deals!</div>
+  <div class="align-items-center hidden lg:flex">
+    <span class="line-height-3">{{currentItem}}</span>
+  </div>
+  <a href="https://primeng.org/slider" style="color: #ffa500;" target="_blank"
+     class="flex align-items-center ml-2 mr-8">
+    <span class="underline font-bold">Learn More</span>
+  </a>
+  <a
+    class="flex align-items-center no-underline justify-content-center border-circle text-gray-100 hover:bg-bluegray-700 cursor-pointer transition-colors transition-duration-150"
+    style="width:2rem; height: 2rem">
+    <i (click)="toggleDivVisibility()" class="pi pi-times"></i>
+  </a>
+</div>
