@@ -13,7 +13,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class GuestDto {
     private String guestId;
-    private String username;
     private String email;
     private String phone;
     private LocalDateTime createAt;

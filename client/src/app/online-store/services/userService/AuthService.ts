@@ -11,6 +11,10 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }) {
-    return this.http.post(`${apiUrl}/api/auth/login`, credentials);
+    return this.http.post(`${apiUrl}/api/auth/login`, credentials, {observe: "response"});
+  }
+
+  register(credentials: { email: string; password: string }) {
+    return this.http.post(`${apiUrl}/api/auth/register`, credentials, {observe: "response"});
   }
 }

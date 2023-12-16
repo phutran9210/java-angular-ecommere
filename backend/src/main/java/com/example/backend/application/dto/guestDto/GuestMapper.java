@@ -3,6 +3,8 @@ package com.example.backend.application.dto.guestDto;
 import com.example.backend.application.dto.guestAddressDto.GuestAddressMapper;
 import com.example.backend.domain.entity.guest.Guest;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,10 +17,9 @@ public class GuestMapper {
 
         GuestDto dto = new GuestDto();
         dto.setGuestId(guest.getGuestId());
-        dto.setUsername(guest.getUsername());
         dto.setEmail(guest.getEmail());
         dto.setPhone(guest.getPhone());
-        dto.setCreateAt(guest.getCreateAt());
+        dto.setCreateAt(LocalDateTime.ofInstant(guest.getCreateAt(), ZoneId.systemDefault()));
         dto.setStatus(guest.getStatus());
 
         if (loadAddresses && guest.getAddresses() != null) {

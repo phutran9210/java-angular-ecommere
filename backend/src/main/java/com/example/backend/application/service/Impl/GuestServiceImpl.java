@@ -1,5 +1,6 @@
 package com.example.backend.application.service.Impl;
 
+import com.example.backend.application.dto.guestDto.GuestCreateDTO;
 import com.example.backend.application.dto.guestDto.GuestDto;
 import com.example.backend.application.dto.guestDto.GuestMapper;
 import com.example.backend.application.service.GuestService;
@@ -7,6 +8,7 @@ import com.example.backend.domain.entity.guest.Guest;
 import com.example.backend.domain.repository.GuestRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class GuestServiceImpl implements GuestService {
 
     private final GuestRepository guestRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public GuestServiceImpl(GuestRepository guestRepository) {
+    public GuestServiceImpl(GuestRepository guestRepository, PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         this.guestRepository = guestRepository;
     }
 
@@ -48,11 +51,19 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
-    public GuestDto createGuest(GuestDto guestDto) {
+    public GuestDto createGuest(GuestCreateDTO guestCreateDTO) throws Exception {
+        if (this.isEmailAlreadyRegistered(guestCreateDTO.getEmail())) {
+            throw new Exception("Email is Exist");
+        }
         Guest guest = new Guest();
-        guest.setUsername(guestDto.getUsername());
-        guest.setEmail(guestDto.getEmail());
+        guest.setEmail(guestCreateDTO.getEmail());
+        guest.setPassword(passwordEncoder.encode(guestCreateDTO.getPassword()));
+        guestRepository.save(guest);
+        return GuestMapper.toDto(guest, false);
+    }
 
-        return guestDto;
+    @Override
+    public Boolean isEmailAlreadyRegistered(String email) {
+        return guestRepository.findByEmail(email).isPresent();
     }
 }
