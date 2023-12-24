@@ -17,4 +17,6 @@ public interface GuestRepository extends JpaRepository<Guest, String> {
     Optional<Guest> findUserById(@Param("id") String id);
 
     Optional<Guest> findByEmail(String email);
+
+    Guest findByEmailAndPassword(String email, String password);
 }

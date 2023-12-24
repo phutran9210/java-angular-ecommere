@@ -67,6 +67,7 @@ export class RegisterComponent {
         }
       }),
       catchError(error => {
+        console.log(error)
         if (error.status === 409) {
           this.showError(409, error.error, true)
           return EMPTY

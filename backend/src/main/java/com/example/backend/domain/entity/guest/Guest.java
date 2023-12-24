@@ -1,10 +1,12 @@
 package com.example.backend.domain.entity.guest;
 
+import com.example.backend.domain.entity.role.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -47,6 +49,13 @@ public class Guest {
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private Set<GuestAddress> addresses;
+
+    @ManyToMany
+    @JoinTable(name = "role_user",
+            joinColumns = @JoinColumn(name = "guest_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
